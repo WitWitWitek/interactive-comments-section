@@ -1,15 +1,18 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { userContext } from '../context/store';
+import getUsers from '../api/usersApi';
 
 export default function UsersList() {
   const { user: currentUser, setUser } = useContext(userContext);
-  const [usersList, setUsersList] = useState<User[] | null>(null);
-  useEffect(() => {
-    fetch('http://localhost:3500/users')
-      .then((res) => res.json())
-      .then((data) => setUsersList(data))
-      .catch((err) => console.log(err));
-  }, []);
+  const usersListQuery = useQuery<User[]>({
+    queryKey: ['users'],
+    queryFn: getUsers,
+  });
+
+  if (usersListQuery.isLoading) return <div>Loading...</div>;
+
+  const usersList = usersListQuery.data;
 
   if (!usersList) return <div>Loading...</div>;
 

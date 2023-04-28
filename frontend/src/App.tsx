@@ -1,25 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Comment from './components/Comment';
 import NewCommentForm from './components/NewCommentForm';
 import UsersList from './components/UsersList';
+import { getComments } from './api/commentsApi';
 
 export default function App() {
-  const [comments, setComments] = useState<CommentType[] | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const queryClient = useQueryClient();
+  const query = useQuery<CommentType[]>({
+    queryKey: ['comments'],
+    queryFn: getComments,
+  });
 
-  useEffect(() => {
-    fetch('http://localhost:3500/comments')
-      .then((res) => res.json())
-      .then((data) => {
-        setComments(data);
-      });
-  }, []);
-
-  if (!comments) return <div>Loading...</div>;
+  if (query.isLoading) return <div>Loading...</div>;
 
   return (
     <main>
       <UsersList />
-      {comments.map((comment) => <Comment key={comment.id} comment={comment} />)}
+      {query.data?.map((comment) => <Comment key={comment.id} comment={comment} isReply={false} />)}
       <NewCommentForm isReplyForm={false} />
     </main>
   );

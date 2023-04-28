@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback } from 'react';
+import { useContext, useState } from 'react';
 import { userContext } from '../context/store';
 import Modal from './Modal';
 import NewCommentForm from './NewCommentForm';
@@ -7,20 +7,16 @@ import { ReactComponent as IconMinus } from '../assets/icons/icon-minus.svg';
 import { ReactComponent as IconDelete } from '../assets/icons/icon-delete.svg';
 import { ReactComponent as IconReply } from '../assets/icons/icon-reply.svg';
 import { ReactComponent as IconEdit } from '../assets/icons/icon-edit.svg';
+import EditCommentForm from './EditCommentForm';
 
-export default function Comment({ comment, setReply }: CommentProps) {
+export default function Comment({ comment, isReply, setReply }: CommentProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isReplying, setIsReplying] = useState<boolean>(false);
+  const [isReplyFormOpen, setIsReplying] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const {
     id, content, createdAt, score, user, replies,
   } = comment;
   const { user: userData } = useContext(userContext);
-
-  const deleteComment = useCallback(async () => {
-    await fetch(`http://localhost:3500/${setReply ? 'sub' : ''}comments/${id}`, {
-      method: 'DELETE',
-    });
-  }, [id]);
 
   return (
     <>
@@ -34,9 +30,17 @@ export default function Comment({ comment, setReply }: CommentProps) {
                 }
           <time className="comment__date">{createdAt}</time>
         </div>
-        <div className="comment__content">
-          {content}
-        </div>
+        {
+          !isEditing
+            ? (
+              <div className="comment__content">
+                {content}
+              </div>
+            )
+            : (
+              <EditCommentForm id={id} content={content} isReply={isReply} />
+            )
+        }
         <div className="comment__score">
           <button type="button">
             <IconPlus />
@@ -60,7 +64,11 @@ export default function Comment({ comment, setReply }: CommentProps) {
                             {' '}
                             Delete
                           </button>
-                          <button className="comment__reply" type="button">
+                          <button
+                            className="comment__reply"
+                            type="button"
+                            onClick={() => setIsEditing(() => true)}
+                          >
                             <IconEdit />
                             {' '}
                             Edit
@@ -86,20 +94,27 @@ export default function Comment({ comment, setReply }: CommentProps) {
                       )
                 }
         </div>
-        {isModalOpen && <Modal deleteCommentFn={deleteComment} setIsModalOpen={setIsModalOpen} />}
+        {isModalOpen
+        && (
+        <Modal
+          setIsModalOpen={setIsModalOpen}
+          commentId={id}
+          isReplyComment={isReply}
+        />
+        )}
       </div>
       {replies && replies?.length > 0 && (
-        <div className="comment__replies">
-          {replies?.map(
-            (reply) => <Comment key={reply.id} comment={reply} setReply={setIsReplying} />,
-          )}
-          {isReplying && <NewCommentForm isReplyForm parentId={id} />}
-        </div>
+      <div className="comment__replies">
+        {replies?.map(
+          (reply) => <Comment key={reply.id} comment={reply} isReply setReply={setIsReplying} />,
+        )}
+        {isReplyFormOpen && <NewCommentForm isReplyForm parentId={id} />}
+      </div>
       )}
-      {replies && replies.length === 0 && isReplying && (
-        <div className="comment__replies">
-          {isReplying && <NewCommentForm isReplyForm parentId={id} />}
-        </div>
+      {replies && replies.length === 0 && isReplyFormOpen && (
+      <div className="comment__replies">
+        {isReplyFormOpen && <NewCommentForm isReplyForm parentId={id} />}
+      </div>
       )}
     </>
   );

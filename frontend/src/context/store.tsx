@@ -1,6 +1,8 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  createContext, ReactNode, useState, useEffect, useMemo,
+  createContext, ReactNode, useState, useMemo,
 } from 'react';
+import getUsers from '../api/usersApi';
 
 const userBlueprint = {
   image: {
@@ -20,11 +22,14 @@ export const userContext = createContext<IUserContext>({
 
 export default function UserContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>({ ...userBlueprint });
-  useEffect(() => {
-    fetch('http://localhost:3500/users')
-      .then((res) => res.json())
-      .then((data) => setUser(data[3]));
-  }, []);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const queryClient = useQueryClient();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const usersQuery = useQuery<User[]>({
+    queryKey: ['users'],
+    queryFn: getUsers,
+    onSuccess: (users) => setUser(users[1]),
+  });
 
   const userContextValue = useMemo(() => ({ user, setUser }), [user]);
   return (

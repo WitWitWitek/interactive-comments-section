@@ -30,6 +30,7 @@ interface NewCommentFormProps {
 
 interface CommentProps {
   comment: CommentType,
+  isReply: boolean,
   setReply?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -37,3 +38,9 @@ interface IUserContext {
   user: User,
   setUser: React.Dispatch<React.SetStateAction<User>>
 }
+
+type DeleteResponse = {
+  message: string
+};
+
+type DeleteVariables = { id: string, isReply: boolean };

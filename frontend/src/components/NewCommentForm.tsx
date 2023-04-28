@@ -1,33 +1,29 @@
 import {
   ChangeEvent, FormEvent, useContext, useState,
 } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userContext } from '../context/store';
+import { postComment } from '../api/commentsApi';
 
 export default function NewCommentForm({ isReplyForm, parentId }: NewCommentFormProps) {
   const { user } = useContext(userContext);
   const [content, setContent] = useState<string>('');
+  const queryClient = useQueryClient();
+
+  const postCommentFn = useMutation({
+    mutationFn: postComment,
+    mutationKey: ['comments'],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+
   const handleSubmission = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user) {
       return;
     }
-    if (isReplyForm) {
-      fetch('http://localhost:3500/subcomments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content, userId: user.userId, parentId }),
-      }).catch((err) => console.log(err));
-    } else {
-      fetch('http://localhost:3500/comments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content, userId: user.userId }),
-      }).catch((err) => console.log(err));
-    }
+    postCommentFn.mutate({ content, userId: user.userId, parentId: (isReplyForm && parentId) ? parentId : '' });
   };
 
   const onTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
