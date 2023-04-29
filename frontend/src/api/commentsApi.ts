@@ -31,6 +31,20 @@ export const updateComment = async (
   return response.json();
 };
 
+export const updateCommentScore = async (
+  { id, updatedScore, isReply } :
+  { id: string, updatedScore: number, isReply: boolean },
+) => {
+  const response = await fetch(`http://localhost:3500/${isReply ? 'sub' : ''}comments/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ updatedScore }),
+  });
+  return response.json();
+};
+
 export const deleteComment = async (
   { id, isReply }:
   { id: string, isReply: boolean },

@@ -34,7 +34,9 @@ export default function Comment({ comment, isReply, setReplyFormAsOpen }: Commen
           setIsEditing={setIsEditing}
         />
         <Score
+          id={id}
           score={score}
+          isReply={isReply}
         />
         <CommentButtons
           isAuthor={user.username === userData?.username}
@@ -64,13 +66,27 @@ export default function Comment({ comment, isReply, setReplyFormAsOpen }: Commen
               />
             ),
           )}
-          {isReplyFormOpen && <NewCommentForm isReplyForm parentId={id} />}
+          {isReplyFormOpen
+          && (
+          <NewCommentForm
+            isReplyForm
+            parentId={id}
+            setIsReplyFormOpen={setIsReplyFormOpen}
+          />
+          )}
         </div>
       )}
       {replies && replies.length === 0 && isReplyFormOpen && (
-      <div className="comment__replies">
-        {isReplyFormOpen && <NewCommentForm isReplyForm parentId={id} />}
-      </div>
+        <div className="comment__replies">
+          {isReplyFormOpen
+          && (
+          <NewCommentForm
+            isReplyForm
+            parentId={id}
+            setIsReplyFormOpen={setIsReplyFormOpen}
+          />
+          )}
+        </div>
       )}
     </>
   );

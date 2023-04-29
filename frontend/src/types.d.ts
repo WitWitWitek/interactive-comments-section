@@ -26,6 +26,7 @@ interface User {
 interface NewCommentFormProps {
   isReplyForm: boolean;
   parentId?: string;
+  setIsReplyFormOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface CommentProps {

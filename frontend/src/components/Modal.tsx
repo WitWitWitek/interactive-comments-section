@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteComment } from '../api/commentsApi';
 
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export default function Modal({ setIsModalOpen, commentId, isReplyComment }: Props) {
+  const modalRef = useRef<HTMLElement | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
   const deleteCommentFn = useMutation({
@@ -17,12 +20,17 @@ export default function Modal({ setIsModalOpen, commentId, isReplyComment }: Pro
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['comments'] }),
   });
 
+  useEffect(() => {
+    modalRef.current = document.getElementById('modal')! as HTMLDivElement;
+    setMounted(true);
+  }, []);
+
   const acceptClickHandler = () => {
     deleteCommentFn.mutate({ id: commentId, isReply: isReplyComment });
     setIsModalOpen(() => false);
   };
 
-  return (
+  const modalStructure = (
     <>
       <div className="backdrop" />
       <div className="modal">
@@ -46,4 +54,6 @@ export default function Modal({ setIsModalOpen, commentId, isReplyComment }: Pro
       </div>
     </>
   );
+
+  return mounted && modalRef.current ? createPortal(modalStructure, modalRef.current) : null;
 }

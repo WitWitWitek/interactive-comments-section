@@ -4,10 +4,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Rubik', sans-serif;
 }
 
 html {
-  font-family: 'Rubik', sans-serif;
   font-size: 16px;
 }
 
@@ -302,8 +302,73 @@ body {
   background-color: var(--primary-light-grayish-blue);
 }
 
-.user-list {
+.users-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   outline-color: var(--primary-moderate-blue);
+  text-align: center;
+  width: 250px;
+  border: 2px solid var(--primary-moderate-blue);
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: var(--primary-light-grayish-blue);
+  overflow: hidden;
+}
+
+.list-open {
+  border-bottom: 2px solid transparent;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  overflow: unset;
+}
+
+.users-list__container {
+  display: none;
+  position: absolute;
+  width: 250px;
+  top: 100%;
+  left: -2px;
+  z-index: 2;
+  border: 2px solid var(--primary-moderate-blue);
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: var(--neutral-light-gray);
+}
+
+.container-open {
+  display: block;
+}
+
+.users-list__button {
+  display: block;
+  width: 100%;
+  border: none;
+  outline-color: var(--primary-moderate-blue);
+  font-size: 1rem;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.users-list__button span {
+  margin-right: auto;
+  margin-left: 10px;
+}
+
+.users-list__button img {
+  margin-left: 50px;
+}
+
+.users-list__button:hover {
+  background-color: var(--primary-soft-red);
+}
+
+.users-list__current-user {
+  width: 100%;
 }
 
 @media only screen and (min-width: 475px) {

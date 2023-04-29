@@ -5,7 +5,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userContext } from '../context/store';
 import { postComment } from '../api/commentsApi';
 
-export default function NewCommentForm({ isReplyForm, parentId }: NewCommentFormProps) {
+export default function NewCommentForm(
+  { isReplyForm, parentId, setIsReplyFormOpen }: NewCommentFormProps,
+) {
   const { user } = useContext(userContext);
   const [content, setContent] = useState<string>('');
   const queryClient = useQueryClient();
@@ -24,6 +26,9 @@ export default function NewCommentForm({ isReplyForm, parentId }: NewCommentForm
       return;
     }
     postCommentFn.mutate({ content, userId: user.userId, parentId: (isReplyForm && parentId) ? parentId : '' });
+    if (setIsReplyFormOpen) {
+      setIsReplyFormOpen(() => false);
+    }
   };
 
   const onTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
