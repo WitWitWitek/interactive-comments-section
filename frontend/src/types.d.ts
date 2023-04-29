@@ -31,7 +31,7 @@ interface NewCommentFormProps {
 interface CommentProps {
   comment: CommentType,
   isReply: boolean,
-  setReply?: React.Dispatch<React.SetStateAction<boolean>>
+  setReplyFormAsOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface IUserContext {

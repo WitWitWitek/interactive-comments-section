@@ -6,9 +6,12 @@ type Props = {
   id: string;
   content: string;
   isReply: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-export default function EditCommentForm({ id, content, isReply }: Props) {
+export default function EditCommentForm({
+  id, content, isReply, setIsEditing,
+}: Props) {
   const [updatedContent, setUpdatedContent] = useState<string>(content);
 
   const queryClient = useQueryClient();
@@ -24,6 +27,7 @@ export default function EditCommentForm({ id, content, isReply }: Props) {
   const handleSubmission = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateCommentFn.mutate({ id, updatedContent, isReply });
+    setIsEditing(() => false);
   };
 
   const onTextareaChange = (
