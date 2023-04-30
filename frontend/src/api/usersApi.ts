@@ -1,5 +1,7 @@
+import { CONNECTION_URL } from './commentsApi';
+
 const getUsers = async () => {
-  const response = await fetch('http://localhost:3500/users');
+  const response = await fetch(`${CONNECTION_URL}/users`);
   return response.json();
 };
 
