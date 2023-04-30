@@ -35,7 +35,7 @@ export default function EditCommentForm({
   ) => setUpdatedContent(e.target.value);
 
   return (
-    <form className="comment__content" onSubmit={handleSubmission}>
+    <form className="comment__edit-content" onSubmit={handleSubmission}>
       <textarea className="form__textarea" maxLength={255} onChange={onTextareaChange} value={updatedContent} />
       <button type="submit" className="form__button">Send</button>
     </form>

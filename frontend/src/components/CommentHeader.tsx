@@ -1,3 +1,5 @@
+import dateHandler from '../lib/dateHandler';
+
 type Props = {
   image: string,
   username: string,
@@ -19,7 +21,7 @@ export default function CommentHeader({
         isAuthor
         && <p className="comment__user-you">you</p>
         }
-      <time className="comment__date">{createdAt}</time>
+      <time className="comment__date">{dateHandler(createdAt)}</time>
     </div>
   );
 }

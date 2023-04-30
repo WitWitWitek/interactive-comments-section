@@ -32,13 +32,28 @@ body {
   padding: 1rem;
 }
 
+body::-webkit-scrollbar {
+  width: 1rem;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--neutral-dark-blue);
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: var(--neutral-grayish-blue);
+}
+
 .comment {
   margin: 1rem 0;
   padding: 1rem;
+  width: 100%;
   background-color: var(--neutral-white);
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
   animation: comment-appears 1.5s forwards;
 }
 
@@ -58,6 +73,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   grid-column: 1 / 3;
+  flex-wrap: wrap;
 }
 
 .comment__user {
@@ -91,6 +107,24 @@ body {
 .comment__content {
   margin: 1rem 0;
   grid-column: 1 / 3;
+  text-align: justify;
+}
+
+.comment__edit-content {
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 80% 20%;
+  margin-bottom: 1rem;
+}
+
+.comment__edit-content textarea {
+  height: 100px;
+}
+
+.comment__edit-content button {
+  grid-column: 2 / 3;
+  height: 35px;
 }
 
 .comment__score {
@@ -98,7 +132,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 5rem;
+  width: 65%;
   padding: 0.5rem 0;
   border-radius: 5px;
   margin-right: auto;
@@ -282,7 +316,22 @@ body {
   outline-color: var(--primary-moderate-blue);
   margin-bottom: 0.5rem;
   font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
 }
+
+.form__textarea::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+.form__textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.form__textarea::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: var(--primary-moderate-blue);
+}
+
 
 .form__button {
   height: 100%;
@@ -371,9 +420,10 @@ body {
   width: 100%;
 }
 
-@media only screen and (min-width: 475px) {
+@media only screen and (min-width: 650px) {
   main {
-    padding: 0 5%;
+    width: 90%;
+    margin: 0 auto;
   }
 
   .comment {
@@ -389,6 +439,23 @@ body {
   .comment__content {
     grid-row: 2 / 3;
     grid-column: 2 / 4;
+  }
+
+  .comment__edit-content {
+    grid-row: 2 / 3;
+    grid-column: 2 / 4;
+    grid-template-columns: 40px repeat(2, 1fr) 80px;
+    grid-template-rows: 80% 20%;
+  }
+
+  .comment__edit-content textarea {
+    grid-column: 1 / 4;
+    height: 110px;
+  }
+
+  .comment__edit-content button {
+    grid-column: 4 / 5;
+    height: 40%;
   }
 
   .comment__score {
@@ -424,5 +491,11 @@ body {
   .form__button {
     height: 40%;
     width: 90%;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  main {
+    width: 750px;
   }
 }

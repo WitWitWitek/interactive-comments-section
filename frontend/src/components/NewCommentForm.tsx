@@ -17,6 +17,10 @@ export default function NewCommentForm(
     mutationKey: ['comments'],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] });
+      setContent('');
+      if (setIsReplyFormOpen) {
+        setIsReplyFormOpen(() => false);
+      }
     },
   });
 
