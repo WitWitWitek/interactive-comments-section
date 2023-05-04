@@ -1,9 +1,10 @@
 export default function dateHandler(date: string) {
   let formattedDate: string;
-  const milisecondsAgo = new Date().getTime() - new Date(date).getTime();
+  const localTime = new Date().getTimezoneOffset() * 60 * 1000;
+  const milisecondsAgo = new Date().getTime() - localTime - new Date(date).getTime();
   const secondsAgo = Math.round(milisecondsAgo / (1000));
 
-  const minutes = Math.round(secondsAgo / 60);
+  const minutes = Math.round((secondsAgo) / 60);
   const hours = Math.round(secondsAgo / (60 * 60));
   const days = Math.round(secondsAgo / (60 * 60 * 24));
   const weeks = Math.round(secondsAgo / (60 * 60 * 24 * 7));

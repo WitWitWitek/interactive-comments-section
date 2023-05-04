@@ -66,7 +66,7 @@ export class Comment extends CommentType {
 
     const { affectedRows } = (
       await pool.execute<ResultSetHeader>(
-        "UPDATE `comments_table` SET `content`= :content, `createdAt`= :updatedAt, `score` = :score WHERE `id` = :id",
+        "UPDATE `comments_table` SET `content`= :content, `updatedAt`= :updatedAt, `score` = :score WHERE `id` = :id",
         {
           id: this.id,
           content: this.content,

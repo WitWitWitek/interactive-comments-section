@@ -113,7 +113,7 @@ var Comment = /** @class */ (function (_super) {
                             throw new errors_1.ValidationError("Comment id required");
                         }
                         this._validate();
-                        return [4 /*yield*/, db_1.pool.execute("UPDATE `comments_table` SET `content`= :content, `createdAt`= :updatedAt, `score` = :score WHERE `id` = :id", {
+                        return [4 /*yield*/, db_1.pool.execute("UPDATE `comments_table` SET `content`= :content, `updatedAt`= :updatedAt, `score` = :score WHERE `id` = :id", {
                                 id: this.id,
                                 content: this.content,
                                 score: this.score,
